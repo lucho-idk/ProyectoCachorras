@@ -5,12 +5,17 @@ public class PlayerMove : MonoBehaviour
     public float RunSpeed = 7;
     public float RotationSpeed = 250;
     public Animator animator;
-
     private float x, y;
     private Rigidbody rb;
 
     public float FuerzaDeSalto = 8f;
     public bool PuedoSaltar;
+
+    [Header("Detección de Suelo")]
+    public Transform groundCheck;       // Empty en los pies
+    public float groundDistance = 0.2f; // Radio de detección
+    public LayerMask groundMask;        // Asigna la capa del suelo
+    private bool isGrounded;
 
     void Start()
     {
@@ -32,6 +37,19 @@ public class PlayerMove : MonoBehaviour
         animator.SetFloat("VelX", x);
         animator.SetFloat("VelY", y);
 
+        // 🔥 Detección de suelo
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        animator.SetBool("TocarSuelo", isGrounded);
+
+        if (isGrounded)
+        {
+            PuedoSaltar = true;
+        }
+        else
+        {
+            EstoyCayendo();
+        }
+
         if (PuedoSaltar)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -39,6 +57,7 @@ public class PlayerMove : MonoBehaviour
                 animator.SetBool("Salte", true);
                 rb.AddForce(new Vector3(0, FuerzaDeSalto, 0), ForceMode.Impulse);
                 animator.SetBool("TocarSuelo", true);
+                PuedoSaltar = false;
             }
         }
         else
@@ -53,4 +72,5 @@ public class PlayerMove : MonoBehaviour
         animator.SetBool("Salte", false);
     }
 }
+
 
