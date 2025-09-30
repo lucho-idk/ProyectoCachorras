@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 2087157327}
   - component: {fileID: 2087157326}
   - component: {fileID: 2087157325}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SnowTerrain_1000
   m_TagString: Ground
   m_Icon: {fileID: 0}
